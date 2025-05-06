@@ -46,7 +46,7 @@ def rotate_left(x):
     return y
 
 class AVLTree:
-    def _init_(self):
+    def __init__(self):
         self.root = None  
 
     
@@ -71,6 +71,7 @@ class AVLTree:
         updateHeight(node)
         balance = getBalance(node)
 
+#CORRECCIÓN DE ERRORES
         # Rebalanceo según los 4 casos posibles
 
         # Caso Izquierda-Izquierda
@@ -97,10 +98,10 @@ class AVLTree:
     def delete(self, value):
         self.root = self._delete_recursive(self.root, value)
 
-    # Función recursiva para eliminar un nodo
+    # Función  para eliminar un nodo
     def _delete_recursive(self, node, value):
         if not node:
-            return node  # Valor no encontrado
+            return node  
 
         # Buscar el nodo a eliminar
         if value < node.value:
@@ -116,7 +117,7 @@ class AVLTree:
 
             # Caso 2: nodo con dos hijos
             temp = self._get_min_value_node(node.right)  # Nodo más pequeño en subárbol derecho
-            node.value = temp.value  # Copia el valor
+            node.value = temp.value  
             node.right = self._delete_recursive(node.right, temp.value)  # Elimina duplicado
 
         # Actualizar altura y rebalancear
@@ -161,11 +162,53 @@ class AVLTree:
         return self._inorder_recursive(node.left) + [node.value] + self._inorder_recursive(node.right)
 
     
-    def print_tree(self, node=None, level=0, label="Root"):
+    def print_tree(self, node=None, level=0, label="Raiz"):
         if node is None:
             node = self.root
         if node.right:
-            self.print_tree(node.right, level + 1, "R")
-        print("   " * level + f"{label}: ({node.value}, h={node.height})")
+            self.print_tree(node.right, level + 1, "D") #D:Derecha
+        print("   " * level + f"{label}: ({node.value}, h={node.height})") #h:Altura
         if node.left:
-            self.print_tree(node.left, level + 1, "L")
+            self.print_tree(node.left, level + 1, "I") #I:Izquierda
+
+def pruebas_avl():
+    print("=== Prueba 1: Inserción con rotación simple (Izquierda-Izquierda) ===")
+    avl01 = AVLTree()
+    for val in [30, 20, 10]:
+        avl01.insert(val)
+    avl01.print_tree()
+
+    print("\n=== Prueba 2: Inserción con rotación doble (Izquierda-Derecha) ===")
+    av0l2 = AVLTree()
+    for val in [30, 10, 20]:
+        av0l2.insert(val)
+    av0l2.print_tree()
+
+    print("\n=== Prueba 3: Inserción con rotación Derecha-Izquierda ===")
+    av0l3 = AVLTree()
+    for val in [10, 30, 25]:
+        av0l3.insert(val)
+    av0l3.print_tree()
+
+    print("\n=== Prueba 4: Eliminación de nodo con dos hijos ===")
+    av0l4 = AVLTree()
+    for val in [50, 30, 70, 20, 40, 60, 80]:
+        av0l4.insert(val)
+    print("Árbol antes de eliminar 50:")
+    av0l4.print_tree()
+    av0l4.delete(50)
+    print("Árbol después de eliminar 50:")
+    av0l4.print_tree()
+
+    print("\n=== Prueba 5: Secuencia de inserciones y eliminación ===")
+    av0l5 = AVLTree()
+    for val in [10, 20, 30, 40, 50, 25]:
+        av0l5.insert(val)
+    print("Árbol antes de eliminar 30:")
+    av0l5.print_tree()
+    av0l5.delete(30)
+    print("Árbol después de eliminar 30:")
+    av0l5.print_tree()
+
+
+pruebas_avl()
